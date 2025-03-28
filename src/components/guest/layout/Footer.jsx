@@ -37,6 +37,11 @@ const Footer = () => {
                   Privacy Policy
                 </Link>
               </li>
+              <li>
+                <Link to="/staff-login" className="text-gray-400 hover:text-white">
+                  Staff Login
+                </Link>
+              </li>
             </ul>
           </div>
           <div>

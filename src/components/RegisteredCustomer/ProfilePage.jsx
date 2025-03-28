@@ -15,7 +15,7 @@ export const ProfilePage = () => {
       try {
         const response = await fetch(`http://localhost:8080/HungryBarFinal/profile`, {
           method: "GET",
-          credentials: "include", // Ensure session cookie is sent
+          credentials: "include",
         });
 
         if (!response.ok) {
@@ -44,7 +44,7 @@ export const ProfilePage = () => {
 
   const handleEditProfile = () => {
     if (profile?.userID) {
-      navigate(`/edit-profile/${profile.userID}`);
+      navigate(`/edit-profile/${profile.userID}`, { state: { user: profile } });
     } else {
       console.error("User ID is missing");
     }

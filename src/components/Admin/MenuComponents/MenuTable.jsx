@@ -1,7 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import { Edit2, Trash2 } from "lucide-react";
+import { DeleteConfirmationModal } from "../UsersComponents/DeleteConfirmationModal";
 
-export const MenuTable = ({ items, onEdit, onDelete }) => {
+export const MenuTable = ({items, onEdit, onDelete }) => {
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [menuToDelete, setMenuToDelete] = useState(null);
+
+// Handle delete button click
+const handleDeleteClick = (itemId) => {
+  setMenuToDelete(itemId); // Set the user ID to delete
+  setShowDeleteModal(true); // Show the confirmation modal
+};
+
+  const handleConfirmDelete = async () => {
+    if (menuToDelete) {
+      try {
+        // Send a request to the backend to delete the user
+        const response = await fetch(
+          "http://localhost:8080/HungryBarFinal/deleteMenuItem",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `itemId=${menuToDelete}`,
+          }
+        );
+
+        if (response.ok) {
+          alert("Menu Item deleted successfully");
+          onDelete(menuToDelete); // Update the parent component's state
+        } else {
+          const errorMessage = await response.text();
+          alert(`Failed to delete Menu Item: ${errorMessage}`);
+        }
+      } catch (error) {
+        alert("An error occurred. Please try again.");
+      }
+    }
+    setShowDeleteModal(false); // Close the modal
+    setMenuToDelete(null); // Reset the user to delete
+  };
+  
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       <div className="overflow-x-auto">
@@ -27,7 +68,7 @@ export const MenuTable = ({ items, onEdit, onDelete }) => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {items.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-50">
+              <tr key={item.itemID} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <img
@@ -47,7 +88,7 @@ export const MenuTable = ({ items, onEdit, onDelete }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">
-                    ${item.price.toFixed(2)}
+                    LKR {item.price.toFixed(2)}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -69,7 +110,7 @@ export const MenuTable = ({ items, onEdit, onDelete }) => {
                     <Edit2 className="h-4 w-4" />
                   </button>
                   <button
-                    onClick={() => onDelete(item.id)}
+                    onClick={() => handleDeleteClick(item.itemID)}
                     className="text-gray-600 hover:text-red-500"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -80,6 +121,14 @@ export const MenuTable = ({ items, onEdit, onDelete }) => {
           </tbody>
         </table>
       </div>
+      {/* Delete Confirmation Modal */}
+            {showDeleteModal && (
+              <DeleteConfirmationModal
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={handleConfirmDelete}
+                isMultiple={false}
+              />
+            )}
     </div>
   );
 };

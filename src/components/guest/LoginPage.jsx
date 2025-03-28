@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Pizza, Eye, EyeOff, Facebook, Instagram } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 
@@ -106,6 +106,9 @@ export const LoginPage = () => {
             <button type="button" className="flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 transition-colors">
               <Instagram className="h-5 w-5 text-[#E4405F]" />
             </button>
+          </div>
+          <div>
+            <Link to='/staff-login' className='underline text-sm text-blue-700'>Staff Login</Link>
           </div>
         </form>
       </div>

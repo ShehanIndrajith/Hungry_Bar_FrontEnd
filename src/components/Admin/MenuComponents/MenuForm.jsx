@@ -8,6 +8,7 @@ export const MenuForm = ({ onClose, onSubmit, initialData }) => {
     e.preventDefault();
 
     const formData = new FormData();
+    formData.append("itemID", initialData?.itemID); // Include itemID for edit operation
     formData.append("name", e.target.name.value);
     formData.append("description", e.target.description?.value || "");
     formData.append("price", e.target.price.value);
@@ -20,18 +21,22 @@ export const MenuForm = ({ onClose, onSubmit, initialData }) => {
       formData.append("image", image);
     }
 
+    const url = initialData
+      ? "http://localhost:8080/HungryBarFinal/editMenuItem" // Edit endpoint
+      : "http://localhost:8080/HungryBarFinal/addMenuItem"; // Add endpoint
+
     try {
-      const response = await fetch("http://localhost:8080/HungryBarFinal/addMenuItem", {
+      const response = await fetch(url, {
         method: "POST",
         body: formData,
       });
 
       if (response.ok) {
-        alert("Menu item added successfully");
+        alert(initialData ? "Menu item updated successfully" : "Menu item added successfully");
         onClose();
       } else {
         const errorMessage = await response.text();
-        alert(`Failed to add menu item: ${errorMessage}`);
+        alert(`Failed: ${errorMessage}`);
       }
     } catch (error) {
       alert("An error occurred. Please try again.");
@@ -45,10 +50,7 @@ export const MenuForm = ({ onClose, onSubmit, initialData }) => {
           <h2 className="text-xl font-semibold">
             {initialData ? "Edit Menu Item" : "Add Menu Item"}
           </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
-          >
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -93,6 +95,7 @@ export const MenuForm = ({ onClose, onSubmit, initialData }) => {
               <select
                 name="category"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                defaultValue={initialData?.categoryID}
               >
                 <option value="">Select category</option>
                 <option value="1">Pizza</option>
@@ -133,7 +136,7 @@ export const MenuForm = ({ onClose, onSubmit, initialData }) => {
               type="submit"
               className="flex-1 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
             >
-              Save Changes
+              {initialData ? "Update Menu Item" : "Add Menu Item"}
             </button>
             <button
               type="button"

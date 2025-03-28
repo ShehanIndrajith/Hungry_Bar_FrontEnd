@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Pizza, Eye, EyeOff, Facebook, Instagram } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 
@@ -89,9 +89,9 @@ export const RegisterPage = () => {
           <div className="flex justify-center text-sm">
             <p className="text-gray-600">
               Already have an account?{" "}
-              <a href="#" className="text-red-500 hover:text-red-600 font-medium">
+              <Link to='login' className="text-red-500 hover:text-red-600 font-medium">
                 Sign in
-              </a>
+              </Link>
             </p>
           </div>
           <button type="submit" className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors">
@@ -117,6 +117,9 @@ export const RegisterPage = () => {
             <button type="button" className="flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 transition-colors">
               <Instagram className="h-5 w-5 text-[#E4405F]" />
             </button>
+          </div>
+          <div>
+            <Link to='/staff-login' className='underline text-sm text-blue-700'>Staff Login</Link>
           </div>
         </form>
       </div>

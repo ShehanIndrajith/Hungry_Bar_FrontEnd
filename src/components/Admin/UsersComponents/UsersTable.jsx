@@ -25,13 +25,16 @@ export const UsersTable = ({
     if (userToDelete) {
       try {
         // Send a request to the backend to delete the user
-        const response = await fetch("http://localhost:8080/HungryBarFinal/deleteStaff", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: `userId=${userToDelete}`,
-        });
+        const response = await fetch(
+          "http://localhost:8080/HungryBarFinal/deleteStaff",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `userId=${userToDelete}`,
+          }
+        );
 
         if (response.ok) {
           alert("User deleted successfully");
@@ -81,7 +84,9 @@ export const UsersTable = ({
                   <input
                     type="checkbox"
                     className="rounded border-gray-300 text-red-500 focus:ring-red-500"
-                    checked={selectedUsers.length === users.length && users.length > 0}
+                    checked={
+                      selectedUsers.length === users.length && users.length > 0
+                    }
                     onChange={(e) => onSelectAll(e.target.checked)}
                   />
                 </th>
@@ -128,22 +133,31 @@ export const UsersTable = ({
                         >
                           {user.name}
                         </div>
-                        <div className="text-sm text-gray-500">{user.email}</div>
+                        <div className="text-sm text-gray-500">
+                          {user.email}
+                        </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getRoleColor(user.role)}`}
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getRoleColor(
+                        user.role
+                      )}`}
                     >
                       {formatRole(user.role)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        user.status === "active"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
                     >
-                      {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                      {user.status.charAt(0).toUpperCase() +
+                        user.status.slice(1)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -160,7 +174,7 @@ export const UsersTable = ({
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </td>
-                </tr> 
+                </tr>
               ))}
             </tbody>
           </table>

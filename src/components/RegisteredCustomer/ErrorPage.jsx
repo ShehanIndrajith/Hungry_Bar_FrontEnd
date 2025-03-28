@@ -1,4 +1,6 @@
 import React from "react";
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import {
   Home,
   RefreshCw,
@@ -7,7 +9,14 @@ import {
   HelpCircle,
 } from "lucide-react";
 
-const ErrorPage = ({ code }) => {
+const ErrorPage = () => {
+  const navigate = useNavigate(); // Use this to programmatically navigate
+  const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const code = params.get("code") || "500";
+    const role = params.get("role");
+
+    console.log("Error page - code:", code, "role:", role); 
   const content = {
     "404": {
       title: "Page Not Found",
@@ -16,6 +25,7 @@ const ErrorPage = ({ code }) => {
       primaryAction: {
         label: "Go to Home",
         icon: Home,
+        onClick: () => navigate("/guesthome"),
       },
       secondaryAction: {
         label: "Contact Support",
@@ -29,10 +39,12 @@ const ErrorPage = ({ code }) => {
       primaryAction: {
         label: "Refresh Page",
         icon: RefreshCw,
+
       },
       secondaryAction: {
         label: "Return to Home",
         icon: Home,
+        onClick: () => navigate("/guesthome"),
       },
     },
   };
@@ -64,17 +76,13 @@ const ErrorPage = ({ code }) => {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
-              onClick={() =>
-                code === "500"
-                  ? window.location.reload()
-                  : (window.location.href = "/")
-              }
+              onClick={primaryAction.onClick}
               className="flex items-center justify-center gap-2 px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 min-w-[160px]"
             >
               <primaryAction.icon className="w-4 h-4" />
               {primaryAction.label}
             </button>
-            <button className="flex items-center justify-center gap-2 px-6 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 min-w-[160px]">
+            <button className="flex items-center justify-center gap-2 px-6 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 min-w-[160px]" onClick={secondaryAction.onClick}>
               <secondaryAction.icon className="w-4 h-4" />
               {secondaryAction.label}
             </button>

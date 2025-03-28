@@ -2,30 +2,53 @@ import React, { useState, useEffect } from "react";
 import { Plus, Search } from "lucide-react";
 import { MenuTable } from "./MenuComponents/MenuTable";
 import { MenuForm } from "./MenuComponents/MenuForm";
+import { DeleteConfirmationModal } from "./UsersComponents/DeleteConfirmationModal";
 
 export const MenuPage = () => {
   const [showForm, setShowForm] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
-  const [menuItems, setMenuItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [menuItems, setMenuItems] = useState([]); // State to store fetched menu items
 
   // Fetch menu items from the backend
-  useEffect(() => {
-    const fetchMenuItems = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/HungryBarFinal/getMenuItems");
-        if (response.ok) {
-          const data = await response.json();
-          setMenuItems(data);
-        } else {
-          console.error("Failed to fetch menu items");
-        }
-      } catch (error) {
-        console.error("Error fetching menu items:", error);
+  const fetchMenuItems = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/HungryBarFinal/getMenuItems");
+      if (response.ok) {
+        const data = await response.json();
+        setMenuItems(data); // Update the menu items state
+      } else {
+        console.error("Failed to fetch menu items");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching menu items:", error);
+    }
+  };
 
+  // Fetch menu items on component mount
+  useEffect(() => {
     fetchMenuItems();
   }, []);
+
+  // Handle delete button click
+  const handleDelete = (itemId) => {
+    setItemToDelete(itemId); // Set the item ID to delete
+    setShowDeleteModal(true); // Show the confirmation modal
+  };
+
+  // Handle bulk delete button click
+  const handleBulkDelete = () => {
+    setItemToDelete(null);
+    setShowDeleteModal(true);
+  };
+
+  // Handle confirmation of deletion
+  const handleDeleteConfirm = async () => {
+    setShowDeleteModal(false);
+    setItemToDelete(null);
+  };
 
   return (
     <div className="p-6">
@@ -50,16 +73,37 @@ export const MenuPage = () => {
           Add Menu Item
         </button>
       </div>
+      {selectedItems.length > 0 && (
+        <div className="mb-4 p-4 bg-gray-50 rounded-lg flex items-center justify-between">
+          <span className="text-sm text-gray-600">
+            {selectedItems.length} items selected
+          </span>
+          <div className="flex gap-3">
+            <button
+              onClick={() => {
+                // Handle bulk status update
+              }}
+              className="text-sm text-gray-600 hover:text-red-500"
+            >
+              Update Status
+            </button>
+            <button
+              onClick={handleBulkDelete}
+              className="text-sm text-gray-600 hover:text-red-500"
+            >
+              Delete Selected
+            </button>
+          </div>
+        </div>
+      )}
       <MenuTable
-        items={menuItems}
-        onEdit={(item) => {
-          setEditingItem(item);
-          setShowForm(true);
-        }}
-        onDelete={(id) => {
-          // Handle delete
-        }}
-      />
+  items={menuItems}
+  onEdit={(item) => {
+    setEditingItem(item); // Set the item to edit
+    setShowForm(true); // Show the form
+  }}
+  onDelete={handleDelete}
+/>
       {showForm && (
         <MenuForm
           initialData={editingItem}
@@ -67,11 +111,22 @@ export const MenuPage = () => {
             setShowForm(false);
             setEditingItem(null);
           }}
-          onSubmit={(data) => {
+          onSubmit={() => {
             // Handle form submission
             setShowForm(false);
             setEditingItem(null);
+            fetchMenuItems(); // Refetch menu items after successful addition/update
           }}
+        />
+      )}
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          isMultiple={!itemToDelete && selectedItems.length > 0}
+          onClose={() => {
+            setShowDeleteModal(false);
+            setItemToDelete(null);
+          }}
+          onConfirm={handleDeleteConfirm}
         />
       )}
     </div>

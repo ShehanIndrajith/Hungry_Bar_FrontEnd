@@ -4,8 +4,8 @@ import { Settings, ClipboardList, ChefHat, Bike, Eye, EyeOff, Loader2 } from "lu
 const ROLES = [
     { id: "admin", label: "Admin", icon: Settings },
     { id: "manager", label: "Manager", icon: ClipboardList },
-    { id: "kitchen_staff", label: "Kitchen Staff", icon: ChefHat },
-    { id: "delivery_staff", label: "Delivery Staff", icon: Bike },
+    { id: "KitchenStaff", label: "Kitchen Staff", icon: ChefHat },
+    { id: "DeliveryStaff", label: "Delivery Staff", icon: Bike },
 ];
 
 export const LoginForm = ({ onSubmit, isLoading, error }) => {

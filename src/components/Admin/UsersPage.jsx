@@ -15,7 +15,9 @@ export const UsersPage = () => {
   // Fetch users from the backend
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:8080/HungryBarFinal/fetchStaff");
+      const response = await fetch(
+        "http://localhost:8080/HungryBarFinal/fetchStaff"
+      );
       if (response.ok) {
         const data = await response.json();
         setUsers(data); // Update the users state

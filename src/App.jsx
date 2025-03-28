@@ -6,7 +6,7 @@ import { HomePage } from "./components/RegisteredCustomer/HomePage.jsx";
 import { AboutPage } from "./components/guest/AboutPage.jsx";
 import { ProfilePage } from "./components/RegisteredCustomer/ProfilePage.jsx";
 import { AddToCartPage } from "./components/guest/AddToCartPage.jsx";
-import { EditProfilePage } from "./components/RegisteredCustomer/EditProfilePage.jsx";
+import  EditProfilePage  from "./components/RegisteredCustomer/EditProfilePage.jsx";
 import { Cart } from "./components/RegisteredCustomer/Cart.jsx";
 import GuestHomePage from "./components/guest/GuestHomePage.jsx";
 import { CustomerSupport } from "./components/guest/CustomerSupport.jsx";
@@ -28,6 +28,7 @@ import RegCheckoutPage from "./components/RegisteredCustomer/RegCheckoutPage.jsx
 import { AboutUs } from "./components/RegisteredCustomer/AboutUs.jsx";
 import DeliveryStaffDashboard from "./components/DeliveryStaff/DeliveryStaffDashboard.jsx";
 import { AddToCart } from "./components/RegisteredCustomer/AddToCart.jsx";
+import {UsersPage} from "./components/Admin/UsersPage.jsx";
 
 function App() {
   return (
@@ -56,13 +57,14 @@ function App() {
         <Route path="/customer-dashboard" element={<CustomerDashboard />} />
         <Route path="/customer-support" element={<CustomerSupportPage />} />
         <Route path="/order-success" element={<OrderSuccessPage />} />
-        <Route path="/error" element={<ErrorPage />} />
+        <Route path="/error" element={<ErrorPage/>} />
         <Route path="/check-out" element={<RegCheckoutPage />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/add-to-cart" element={<AddToCart />} />
 
         {/* Staff Routes */}
         <Route path="/staff-login" element={<StaffLogin />} />
+        <Route path="/user-page" element={<UsersPage/>}/>
         <Route path="/admin-dashboard" element={<DashboardOverview />} />
         <Route path="/manager-dashboard" element={<Manager />} />
 
@@ -70,7 +72,7 @@ function App() {
         <Route path="/delivery-dashboard" element={<DeliveryStaffDashboard />} />
 
         {/* Default Route */}
-        <Route path="/" element={<GuestHomePage />}   />
+        <Route path="/" element={<DeliveryStaffDashboard />}  />
       </Routes>
     </Router>
   );
